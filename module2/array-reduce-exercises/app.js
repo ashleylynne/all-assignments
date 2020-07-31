@@ -12,7 +12,7 @@ function total(numbers) {
         final += num
         return final
     }, 0); console.log(result)
-} console.log(total(numbers)) //This is returning as undefined
+} console.log(total(numbers)) 
 
 // 2) Turn an array of numbers into a long string of all those numbers.
 // function stringConcat(arr) {
@@ -23,9 +23,10 @@ function total(numbers) {
 
 function stringConcat(numbers) {
     const result = numbers.reduce(function(final, num){
-        final.toString(num)
+        final += num.toString()
+        console.log(final)
         return final
-    }); console.log(result)
+    }, 0); console.log(result)
 } console.log(stringConcat(numbers))
 
 
@@ -82,9 +83,9 @@ const wishlist = [
 
 function shoppingSpree(wishlist) {
     const totalPrice = wishlist.reduce(function(final, item){
-        final.price += item.price
+        final += item.price
         return final
-    }); console.log(totalPrice)
+    }, 0); console.log(totalPrice)
 } console.log(shoppingSpree(wishlist))
 
 
@@ -106,10 +107,10 @@ var arrays = [
 
 function flatten(arrays) {
     const newArr = arrays.reduce(function(final, array){
-        array.concat(arrays)
+        final = final.concat(array)
         return final
     }); console.log(newArr);
-} console.log(flatten(arrays)) //I am confusion
+} console.log(flatten(arrays))
 
 
 
@@ -129,8 +130,8 @@ function voterResults(voters) {
        } else {
             final.midVotes++
        } return final
-   }); console.log(voterAge);
-} console.log(voterResults(voters)) //Not returning what I want
+   }, {youngVotes: 0, youth: 0, midVotes: 0}); console.log(voterAge);
+} console.log(voterResults(voters))
 
 // console.log(voterResults(voters)); // Returned value shown below:
 // /*
