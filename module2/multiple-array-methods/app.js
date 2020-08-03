@@ -53,10 +53,27 @@ Output:
 */
 
 function sortedOfAge(peopleArray) {
-    const ageSort = peopleArray.reduce(function(final, person){
-        if (person.age > 18) {
-            final.ofAge
-            final.push(person.firstName + " " + person.lastName + " is " + person.age)
-        }; return final.sort()
-    }, []); console.log(ageSort)
-} console.log(sortedOfAge(peopleArray))
+    return peopleArray.filter(person => person.age > 18)
+} 
+console.log(sortedOfAge(peopleArray))
+
+function alphabetically(peopleArray) {
+    // Code that alphabetizes here
+    peopleArray.sort(persona, personb); {
+        return personb.lastName.localeCompare(persona.lastName) ||
+        personb.lastName.localeCompare(persona.firstName)
+    }
+    
+} 
+console.log(alphabetically(peopleArray))
+
+function addHTML(peopleArray) {
+    let html = peopleArray.map(person => "<li>" + person.firstName + " " + person.lastName + " is " + person.age + "</li>")
+    return html
+} 
+    console.log(addHTML(peopleArray))
+
+function allFunctions(peopleArray) {
+    return sortedOfAge(peopleArray), addHTML(peopleArray);
+    // alphabetically(peopleArray)
+} console.log(allFunctions(peopleArray))
