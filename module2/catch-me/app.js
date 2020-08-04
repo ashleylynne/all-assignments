@@ -12,11 +12,12 @@ var readlineSync = require('readline-sync');
 let x = readlineSync.question("Please enter 1 number ");
 let y = readlineSync.question("Please enter a second number ");
 
+x = Number(x)
+y = Number(y)
 
 function sum(x, y) {
-    try {
-        let isNumber = true;
-        if((x, y) !== isNumber) {
+    try {      
+        if(isNaN(x) || isNaN(y)) {
             throw new Error("This is not a number!")
         } else{
             return x + y;  
@@ -25,7 +26,9 @@ function sum(x, y) {
     catch(error) {
         console.log(error);
     }
-} console.log(sum(x, y)) //This was working fine initially but it no longer working and I'm not sure why.
+} 
+
+console.log(sum(x, y))
 
 // 2a) Given a user object, write a function called login that takes a username and password as parameters. Throw an error if either of them don't match. Otherwise, log to the console a message saying "login successful!"
 
@@ -36,19 +39,21 @@ function sum(x, y) {
  
 let user = {username: "ashsauce", password: "drip0rdr0wn"};
 
-const inputUserName = readlineSync.question("Please enter your username");
-const inputPassword = readlineSync.question("Please enter your password");
+const inputUserName = readlineSync.question("Please enter your username ");
+const inputPassword = readlineSync.question("Please enter your password ");
 
-let allInput = inputUserName + inputPassword
 
 function login(inputUserName, inputPassword){
     try {
-        let correctLogin = true;
-        if((allInput)!==user) {
-            correctLogin = false;
+        if(inputUserName!==user.username || inputPassword !== user.password) {
             throw new Error("Incorrect username or password")
-        } return "You are logged in!"
-    } catch (error) {
-       console.log(error) 
+        } 
+        return "You are logged in!"
+
+    } 
+        catch (error) {
+        console.log(error) 
     }
-} console.log(login(inputUserName, inputPassword))
+} 
+
+console.log(login(inputUserName, inputPassword))
