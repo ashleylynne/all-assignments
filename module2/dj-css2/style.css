@@ -30,6 +30,7 @@ ALSO, you must make each box smoothly transition from one style to another. (Thi
     box-shadow: none;
     border-radius: 0;
     background-color: red;
+    transition-duration: 500ms;
     box-shadow: 10px 10px 5px 0 #999;
     border-radius: 10%;
 }
@@ -46,7 +47,9 @@ ALSO, you must make each box smoothly transition from one style to another. (Thi
 #box2:hover {
     box-shadow: none;
     border-radius: 0;
-    background-color: red;
+    background-color: blue;
+    transition-duration: 500ms;
+    opacity: 80%;
     box-shadow: 10px 10px 5px 0 #999;
     border-radius: 10%;
 }
@@ -63,7 +66,8 @@ ALSO, you must make each box smoothly transition from one style to another. (Thi
 #box3:hover {
     box-shadow: none;
     border-radius: 0;
-    background-color: red;
+    background-color: green;
+    transition-duration: 500ms;
     box-shadow: 10px 10px 5px 0 #999;
     border-radius: 10%;
 }
@@ -80,7 +84,9 @@ ALSO, you must make each box smoothly transition from one style to another. (Thi
 #box4:hover {
     box-shadow: none;
     border-radius: 0;
-    background-color: red;
+    background-color: yellow;
+    transition-duration: 500ms;
+    /* opacity: 50%; */
     box-shadow: 10px 10px 5px 0 #999;
     border-radius: 10%;
 }
@@ -97,7 +103,8 @@ ALSO, you must make each box smoothly transition from one style to another. (Thi
 #box5:hover {
     box-shadow: none;
     border-radius: 0;
-    background-color: red;
+    background-color: purple;
+    transition-duration: 500ms;
     box-shadow: 10px 10px 5px 0 #999;
     border-radius: 10%;
 }
@@ -114,7 +121,8 @@ ALSO, you must make each box smoothly transition from one style to another. (Thi
 #box6:hover {
     box-shadow: none;
     border-radius: 0;
-    background-color: red;
+    background-color: orange;
+    transition-duration: 500ms;
     box-shadow: 10px 10px 5px 0 #999;
     border-radius: 10%;
 }
