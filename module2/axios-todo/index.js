@@ -23,12 +23,43 @@
 
 // GET all
 
-// createTodo function would go here. this get request will go inside the function
+// Get Todos Button element
+const getBtn = document.getElementById('get-button')
 
-axios.get("https://api.vschool.io/simpfriedrice/todo")
-    .then(response => console.log(response.data))
-    .catch(error => console.log(error))
+// Click function
+function click(){
+    getBtn.addEventListener("click", getToDos)
 
+}
+
+
+// Get todos Function
+function getToDos() {
+    // Get request
+    axios.get("https://api.vschool.io/simpfriedrice/todo")
+    .then(res => {
+        // log response
+        console.log(res)
+        // user creates todos variable
+        const todos = response.data
+        listToDos(todos)
+        
+    })
+    .catch(err => {
+        console.log(err)
+    })
+};
+// List todos function
+function listToDos(todos) {
+    for(let i = 0; i < todos.length; i++) {
+        // Create h1 element
+        const h1 = document.createElement("h1")
+        // Create title
+        h1.textContent = todos[i].title
+        // Append element to page
+        document.body.appendChild(h1)
+    }
+};
 
 
 // Part 2 - POST
@@ -41,15 +72,27 @@ axios.get("https://api.vschool.io/simpfriedrice/todo")
 // A user should be able to give the item a description.
 // A user should be able to attach an imgUrl to the item
 
-const newTodo = {
-    title: document.getElementById('toDoItem'),
-    description: document.getElementsById('toDoItem').value //Literally just guessing here lol idk what to put fr and have no idea how to allow the user to attach an img wtf
+const addToDoForm = document["add-todo-form"]
+
+function submitForm() {
+
+    addToDoForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        const toDoTitle = addToDoForm.title.value;
+        console.log(toDoTitle)
+    });
 }
 
-axios.post("https://api.vschool.io/simpfriedrice/todo", newTodo)
-    .then(response => console.log(response.data))
-    .catch(error => console.log(error))
+function postToDo() {
 
+    axios.post("https://api.vschool.io/simpfriedrice/todo", newTodo)
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
 // Part 3 - PUT Part 1
 // Each todo will have a checkbox where it can be marked complete or incomplete
 // Checking the checkbox should update the database
@@ -60,9 +103,36 @@ axios.post("https://api.vschool.io/simpfriedrice/todo", newTodo)
 
 // put
 
-axios.put("https://api.vschool.io/simpfriedrice/todo/<id>", {})
-    .then(res => console.log(res.data))
-    .catch(err => console.log(err))
+function putToDos() {
+
+    axios.get("https://api.vschool.io/simpfriedrice/todo")
+    .then(response => {
+        console.log(response.data)
+    })
+    .catch(error => console.log(error))
+}
+            function displayTodos(todos){
+                todos.map(todo => {
+                    // Create Element Container
+                    let div = document.createElement('div')
+                    //Create Elements
+                    let h1 = document.createElement('h1')
+                    //Add Text
+                    h1.textContent = todo.title
+                    //Add Element to Container
+                    div.appendChild(h1)
+                    //Add Container to HTML
+                        //Make sure in your HTML you have something like this <div id='list'> </div>
+                    document.getElementById('list').appendChild(div)
+                })
+            }
+
+// putbutton
+
+const putBtn = document.getElementById("put-todo-button")
+
+putBtn.addEventListener("click", putToDos) 
+
 
 // update
 
@@ -72,22 +142,18 @@ axios.put("https://api.vschool.io/simpfriedrice/todo/<id>", {})
 // Each todo should be rendered with a button marked "X" or "Delete" that when clicked, will delete the Todo
 
 
-// get one
-
-axios.get("https://api.vschool.io/simpfriedrice/todo")
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-
 // delete
 
-const button = document.getElementById('delete-button')
+const deleteBtn = document.getElementById('delete-button')
 
-button.addEventListener("click", function(){
+deleteBtn.addEventListener("click", deleteToDo)
+
+function deleteToDo() {
     axios.delete("https://api.vschool.io/simpfriedrice/todo/<id>")
         .then(res => console.log(res))
         .catch(err => console.log(err))
 
-});
+}
 
 
 
