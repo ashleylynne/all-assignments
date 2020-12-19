@@ -26,12 +26,9 @@
 // Get Todos Button element
 const getBtn = document.getElementById('get-button')
 
-// Click function
-function click(){
-    getBtn.addEventListener("click", getToDos)
+// Get Todos Button function
 
-}
-
+getBtn.addEventListener("click", getToDos)
 
 // Get todos Function
 function getToDos() {
@@ -72,8 +69,10 @@ function listToDos(todos) {
 // A user should be able to give the item a description.
 // A user should be able to attach an imgUrl to the item
 
+// Add ToDos Form
 const addToDoForm = document["add-todo-form"]
 
+// Add Todo button
 function submitForm() {
 
     addToDoForm.addEventListener("submit", function(e){
@@ -82,7 +81,7 @@ function submitForm() {
         console.log(toDoTitle)
     });
 }
-
+// Post ToDo Function
 function postToDo() {
 
     axios.post("https://api.vschool.io/simpfriedrice/todo", newTodo)
@@ -92,6 +91,17 @@ function postToDo() {
         .catch(err => {
             console.log(err)
         })
+        addToDos()
+        // Function to AddTodos
+        function addToDos(todos) {
+            todos.map(todo => {
+                let div = document.createElement('div')
+                let h1 = document.createElement('h1')
+                h1.textContent = todo.title
+                div.appendChild(h1)
+                document.getElementById('list')
+            });
+        }
 }
 // Part 3 - PUT Part 1
 // Each todo will have a checkbox where it can be marked complete or incomplete
