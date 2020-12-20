@@ -23,12 +23,15 @@
 
 // GET all
 
-// Get Todos Button element
-const getBtn = document.getElementById('get-button')
+document.addEventListener('DOMContentLoaded', () => {
+    // Get Todos Button element
+    const getBtn = document.getElementById('get-button')
+    // Get Todos Button function
+    getBtn.addEventListener("click", getToDos)
 
-// Get Todos Button function
+})
 
-getBtn.addEventListener("click", getToDos)
+
 
 // Get todos Function
 function getToDos() {
@@ -38,7 +41,7 @@ function getToDos() {
         // log response
         console.log(res)
         // user creates todos variable
-        const todos = response.data
+        const todos = res.data
         listToDos(todos)
         
     })
@@ -57,6 +60,7 @@ function listToDos(todos) {
         document.body.appendChild(h1)
     }
 };
+
 
 
 // Part 2 - POST
@@ -82,7 +86,7 @@ function submitForm() {
     });
 }
 // Post ToDo Function
-function postToDo() {
+function postToDo(newTodo) {
 
     axios.post("https://api.vschool.io/simpfriedrice/todo", newTodo)
         .then(res => {
