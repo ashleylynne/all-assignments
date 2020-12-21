@@ -23,15 +23,10 @@
 
 // GET all
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Get Todos Button element
-    const getBtn = document.getElementById('get-button')
-    // Get Todos Button function
-    getBtn.addEventListener("click", getToDos)
-
-})
-
-
+// Get Todos Button element
+const getBtn = document.getElementById('get-button')
+// Get Todos Button function
+getBtn.addEventListener("click", getToDos)
 
 // Get todos Function
 function getToDos() {
@@ -42,8 +37,7 @@ function getToDos() {
         console.log(res)
         // user creates todos variable
         const todos = res.data
-        listToDos(todos)
-        
+        listToDos(todos)   
     })
     .catch(err => {
         console.log(err)
@@ -52,15 +46,30 @@ function getToDos() {
 // List todos function
 function listToDos(todos) {
     for(let i = 0; i < todos.length; i++) {
-        // Create h1 element
-        const h1 = document.createElement("h1")
-        // Create title
-        h1.textContent = todos[i].title
-        // Append element to page
-        document.body.appendChild(h1)
+        makeOne(todos[i])
     }
 };
 
+// Create one to do
+function makeOne(todo){
+    // Create h1 element
+    const h1 = document.createElement("h1")
+    // Create title
+    h1.textContent = todo.title
+    // Append element to page
+    document.body.appendChild(h1)
+    // make a new input, give it some text, add event lstener
+    // .type = "checkbox"
+    const newInput = document.createElement("input.type='checkbox'");
+    newInput.textContent = "";
+    // addEventListener take 2 arguments, action and the function
+    newInput.addEventListener("click", function(e) {
+        e.preventDefault();
+        if (checked === true) {
+            document.body.appendChild(newInput)
+        };
+    });
+};
 
 
 // Part 2 - POST
@@ -77,29 +86,37 @@ function listToDos(todos) {
 const addToDoForm = document["add-todo-form"]
 
 // Add Todo button
-function submitForm() {
 
-    addToDoForm.addEventListener("submit", function(e){
-        e.preventDefault();
-          const toDoContent = document.getElementById("add-todo-input").value;
-          console.log(toDoContent);
-            const userPost= {
-              title : toDoContent
-            }
-            postToDo(userPost);
-         document.getElementById("add-todo-input").value ="";
-      });
-}
+
+addToDoForm.addEventListener("submit", function(e){
+    e.preventDefault();
+        console.dir(addToDoForm)
+        const toDoContent = addToDoForm.title.value
+        console.log(toDoContent);
+        const userPost= {
+            title : toDoContent
+        }
+        postToDo(userPost);
+    });
+
 // Post ToDo Function
 function postToDo(userPost) {
     axios.post("https://api.vschool.io/simpfriedrice/todo", userPost)
-        .then(res => {
-            console.log(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        });
-      }
+    .then(res => {
+        console.log(res.data)
+    })
+    .catch(err => {
+        console.log(err)
+    });
+}
+function putToDos() {
+    const userPost = 
+    axios.put("https://api.vschool.io/simpfriedrice/todo", userPost)
+    .then(response => {
+        console.log(response.data)
+    })
+    .catch(error => console.log(error))
+}
 // Part 3 - PUT Part 1
 // Each todo will have a checkbox where it can be marked complete or incomplete
 // Checking the checkbox should update the database
@@ -110,28 +127,20 @@ function postToDo(userPost) {
 
 // put
 
-function putToDos() {
-
-    axios.get("https://api.vschool.io/simpfriedrice/todo")
-    .then(response => {
-        console.log(response.data)
+function displayTodos(todos){
+    todos.map(todo => {
+        // Create Element Container
+        let div = document.createElement('div')
+        //Create Elements
+        let h1 = document.createElement('h1')
+        //Add Text
+        h1.textContent = todo.title
+        //Add Element to Container
+        div.appendChild(h1)
+        //Add Container to HTML
+        document.getElementById('list').appendChild(div)
     })
-    .catch(error => console.log(error))
 }
-            function displayTodos(todos){
-                todos.map(todo => {
-                    // Create Element Container
-                    let div = document.createElement('div')
-                    //Create Elements
-                    let h1 = document.createElement('h1')
-                    //Add Text
-                    h1.textContent = todo.title
-                    //Add Element to Container
-                    div.appendChild(h1)
-                    //Add Container to HTML
-                    document.getElementById('list').appendChild(div)
-                })
-            }
 
 // putbutton
 
