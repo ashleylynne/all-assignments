@@ -81,32 +81,25 @@ function submitForm() {
 
     addToDoForm.addEventListener("submit", function(e){
         e.preventDefault();
-        const toDoTitle = addToDoForm.title.value;
-        console.log(toDoTitle)
-    });
+          const toDoContent = document.getElementById("add-todo-input").value;
+          console.log(toDoContent);
+            const userPost= {
+              title : toDoContent
+            }
+            postToDo(userPost);
+         document.getElementById("add-todo-input").value ="";
+      });
 }
 // Post ToDo Function
-function postToDo(newTodo) {
-
-    axios.post("https://api.vschool.io/simpfriedrice/todo", newTodo)
+function postToDo(userPost) {
+    axios.post("https://api.vschool.io/simpfriedrice/todo", userPost)
         .then(res => {
             console.log(res.data)
         })
         .catch(err => {
             console.log(err)
-        })
-        addToDos()
-        // Function to AddTodos
-        function addToDos(todos) {
-            todos.map(todo => {
-                let div = document.createElement('div')
-                let h1 = document.createElement('h1')
-                h1.textContent = todo.title
-                div.appendChild(h1)
-                document.getElementById('list')
-            });
-        }
-}
+        });
+      }
 // Part 3 - PUT Part 1
 // Each todo will have a checkbox where it can be marked complete or incomplete
 // Checking the checkbox should update the database
@@ -136,7 +129,6 @@ function putToDos() {
                     //Add Element to Container
                     div.appendChild(h1)
                     //Add Container to HTML
-                        //Make sure in your HTML you have something like this <div id='list'> </div>
                     document.getElementById('list').appendChild(div)
                 })
             }
