@@ -16,9 +16,18 @@
 // All todo items are tracked by your name so don't forget to enter it in the url.
 
 // GET requests
-// GET all todos: https://api.vschool.io/<yourname>/todo
 
 // GET one todo: https://api.vschool.io/<yourname>/todo/<todoId>
+
+function getOne() {
+    axios.get("https://api.vschool.io/simpfriedrice/todo" + todo._id, todo)
+    .then(res => {
+        console.log(res)
+    })
+    .catch(err => [
+        console.log(err)
+    ]);
+}
 
 
 // GET all
@@ -28,7 +37,7 @@ const getBtn = document.getElementById('get-button')
 // Get Todos Button function
 getBtn.addEventListener("click", getToDos)
 
-// Get todos Function
+// Get All todos Function
 function getToDos() {
     // Get request
     axios.get("https://api.vschool.io/simpfriedrice/todo")
@@ -72,17 +81,6 @@ function makeOne(todo){
     });
 };
 
-// Update
-// get todos
-getToDos();
-
-// Clearlist function to avoid data repeat on page
-function clearList() {
-    const list = document.getElementById('list')
-    while(list.firstChild) {
-        list.removeChild(list.firstChild)
-    }
-}
 
 
 
@@ -96,6 +94,13 @@ function clearList() {
 // A user should be able to give the item a description.
 // A user should be able to attach an imgUrl to the item
 
+// Clearlist function to avoid data repeat on page
+function clearList() {
+    const list = document.getElementById('list')
+    while(list.firstChild) {
+        list.removeChild(list.firstChild)
+    }
+}
 // Add ToDos Form
 const addToDoForm = document["add-todo-form"]
 
@@ -122,22 +127,35 @@ function postToDo(userPost) {
         console.log(err)
     });
 }
-function putToDos(userPost) {
-    axios.put("https://api.vschool.io/simpfriedrice/todo/", userPost)
-    .then(response => {
-        console.log(response.data)
-    })
-    .catch(error => console.log(error))
-}
+
 // Part 3 - PUT Part 1
 // Each todo will have a checkbox where it can be marked complete or incomplete
 // Checking the checkbox should update the database
 
 // get one
 
-// code goes here but idk if we put first or not lol brb
+getOne(todos);
 
-// put
+
+// Put ToDos Function
+function putToDos(userPost) {
+    axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, userPost)
+    .then(response => {
+        console.log(response.data)
+    })
+    .catch(error => console.log(error))
+}
+
+// putbutton
+
+const putBtn = document.getElementById("put-todo-button")
+
+putBtn.addEventListener("click", putToDos) 
+
+// Clear todos
+clearList(todos);
+
+// Display New ToDos
 
 function displayTodos(todos){
     todos.map(todo => {
@@ -154,14 +172,13 @@ function displayTodos(todos){
     })
 }
 
-// putbutton
-
-const putBtn = document.getElementById("put-todo-button")
-
-putBtn.addEventListener("click", putToDos) 
 
 
 // update
+
+// List data
+getToDos(todos);
+
 
 
 // Part 4 - DELETE
@@ -173,10 +190,13 @@ putBtn.addEventListener("click", putToDos)
 
 const deleteBtn = document.getElementById('delete-button')
 
+// addEventListener
 deleteBtn.addEventListener("click", deleteToDo)
 
+
+// Delete Function
 function deleteToDo() {
-    axios.delete("https://api.vschool.io/simpfriedrice/todo/<id>")
+    axios.delete("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
         .then(res => console.log(res))
         .catch(err => console.log(err))
 
