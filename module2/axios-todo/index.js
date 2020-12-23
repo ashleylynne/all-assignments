@@ -60,16 +60,30 @@ function makeOne(todo){
     document.body.appendChild(h1)
     // make a new input, give it some text, add event lstener
     // .type = "checkbox"
-    const newInput = document.createElement("input.type='checkbox'");
+    const newInput = document.createElement("input");
+    newInput.type = "checkbox";
     newInput.textContent = "";
+    document.body.appendChild(newInput)
     // addEventListener take 2 arguments, action and the function
-    newInput.addEventListener("click", function(e) {
+    newInput.checked = todo.completed;
+    newInput.addEventListener("change", function(e) {
         e.preventDefault();
-        if (checked === true) {
-            document.body.appendChild(newInput)
-        };
+        axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
     });
 };
+
+// Update
+// get todos
+getToDos();
+
+// Clearlist function to avoid data repeat on page
+function clearList() {
+    const list = document.getElementById('list')
+    while(list.firstChild) {
+        list.removeChild(list.firstChild)
+    }
+}
+
 
 
 // Part 2 - POST
@@ -86,7 +100,6 @@ function makeOne(todo){
 const addToDoForm = document["add-todo-form"]
 
 // Add Todo button
-
 
 addToDoForm.addEventListener("submit", function(e){
     e.preventDefault();
@@ -109,9 +122,8 @@ function postToDo(userPost) {
         console.log(err)
     });
 }
-function putToDos() {
-    const userPost = 
-    axios.put("https://api.vschool.io/simpfriedrice/todo", userPost)
+function putToDos(userPost) {
+    axios.put("https://api.vschool.io/simpfriedrice/todo/", userPost)
     .then(response => {
         console.log(response.data)
     })
