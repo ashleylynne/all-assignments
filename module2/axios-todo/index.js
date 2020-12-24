@@ -17,17 +17,21 @@
 
 // GET requests
 
-// GET one todo: https://api.vschool.io/<yourname>/todo/<todoId>
 
-function getOne() {
-    axios.get("https://api.vschool.io/simpfriedrice/todo" + todo._id, todo)
-    .then(res => {
-        console.log(res)
-    })
-    .catch(err => [
-        console.log(err)
-    ]);
-}
+// Display All Todos at top of page. This will be the main container where all elements will go
+
+const list = document.getElementById("list")
+
+// GET one todo leave out for now
+// function getOne() {
+//     axios.get("https://api.vschool.io/simpfriedrice/todo" + todo._id, todo)
+//     .then(res => {
+//         console.log(res)
+//     })
+//     .catch(err => [
+//         console.log(err)
+//     ]);
+// }
 
 
 // GET all
@@ -46,39 +50,88 @@ function getToDos() {
         console.log(res)
         // user creates todos variable
         const todos = res.data
-        listToDos(todos)   
+        // List ToDos Loop
+        for(let i = 0; i < todos.length; i++) {
+            makeOne(todos[i])
+        }
     })
     .catch(err => {
         console.log(err)
     })
 };
 // List todos function
-function listToDos(todos) {
-    for(let i = 0; i < todos.length; i++) {
-        makeOne(todos[i])
-    }
-};
+// function listToDos(todos) {
+//     for(let i = 0; i < todos.length; i++) {
+//         makeOne(todos[i])
+//     }
+// };
 
-// Create one to do
+// Create one to do this also needs a spot where we make a delete button and a put button
 function makeOne(todo){
+    // Create div container
+    const container = document.createElement("div")
     // Create h1 element
     const h1 = document.createElement("h1")
     // Create title
     h1.textContent = todo.title
     // Append element to page
     document.body.appendChild(h1)
-    // make a new input, give it some text, add event lstener
-    // .type = "checkbox"
+    // make a new input
     const newInput = document.createElement("input");
+    // make it a checkbox
     newInput.type = "checkbox";
+    // add text
     newInput.textContent = "";
+    // append to div
     document.body.appendChild(newInput)
-    // addEventListener take 2 arguments, action and the function
+    // Define checked box = completed todo
     newInput.checked = todo.completed;
+    // Append new div to list
+    list.appendChild(container)
+    // Append new h1 to div
+    container.appendChild(h1)
+    // Append user input to div (checked box)
+    container.appendChild(newInput)
+    // addEventListener take 2 arguments, action and the function
     newInput.addEventListener("change", function(e) {
         e.preventDefault();
-        axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
-    });
+        axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, {completed
+        })
+            // This should fire off a linethrough when the todo is completed
+            .then(res => {
+                h1.style.textDecoration = res.data.completed ? "line-through": "none"
+            })
+    })
+    // add edit button for each todo
+    for(i=0; i<todos.length; i++) {
+        // create buttone element
+        const putBtn = document.createElement("button")
+        putBtn.textContent = "edit"
+        // append to the todo
+        h1.appendChild(putBtn)
+        // add event listener
+        putBtn.addEventListener("click", function(e){
+            e.preventDefault();
+            axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
+                //A bit confused on exactly what promise to write here or how to write it
+                .then(res => res.data.newInput) //totally just guessing here I have no idea
+        })   
+
+    }
+    // add delete button for each todo
+    for(i=0; i<todos.length; i++) {
+        const deleteBtn = document.createElement("button")
+        deleteBtn.textContent = "delete"
+        // Append child
+        h1.appendChild(deleteBtn)
+        deleteBtn.addEventListener("click", function(e){
+            // Allows user to delete specific todo
+            e.preventDefault();
+            axios.delete("https://api.vschool.io/simpfriedrice/todo/" + todo._id, userPost)
+                .then(res=>console.log(res.data))
+                .catch(err=>console.log(err))
+        })
+    }
 };
 
 
@@ -148,7 +201,7 @@ function putToDos(userPost) {
 
 // putbutton
 
-const putBtn = document.getElementById("put-todo-button")
+const putBtn = document.createElement("button")
 
 putBtn.addEventListener("click", putToDos) 
 
