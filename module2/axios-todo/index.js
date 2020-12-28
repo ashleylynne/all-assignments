@@ -1,19 +1,5 @@
 // Part 1 - GET
-// The user can see their current list of todos.
-// Todos show up as soon as the page loads.
-// If a todo item is complete, it should have a strikethrough line on it
-// Images should be displayed as images if there are any
-// Hints:
 
-// A createTodo function that takes one todo and inserts it to the DOM is very userfull
-
-// Use postman to get those first few todos in there with some images so you can style your list!
-
-// The baseUrl is: https://api.vschool.io/<yourname>/todo[/<todoId>]
-
-// (Where <yourname> is your actual name, i.e.: https://api.vschool.io/jonsmith/todo) and <todoId> is the _id attribute of an already-existing todo item. (Only to be used for GET (one), PUT, and DELETE requests.) See the Using id section below for more info on how to use _id in your requests.
-
-// All todo items are tracked by your name so don't forget to enter it in the url.
 
 // GET requests
 
@@ -22,120 +8,114 @@
 
 const list = document.getElementById("list")
 
-// GET one todo leave out for now
-// function getOne() {
-//     axios.get("https://api.vschool.io/simpfriedrice/todo" + todo._id, todo)
-//     .then(res => {
-//         console.log(res)
-//     })
-//     .catch(err => [
-//         console.log(err)
-//     ]);
-// }
-
-
 // GET all
 
-// Get Todos Button element
-const getBtn = document.getElementById('get-button')
-// Get Todos Button function
-getBtn.addEventListener("click", getToDos)
-
-// Get All todos Function
-function getToDos() {
-    // Get request
-    axios.get("https://api.vschool.io/simpfriedrice/todo")
+// Get request
+axios.get("https://api.vschool.io/simpfriedrice/todo")
     .then(res => {
         // log response
         console.log(res)
         // user creates todos variable
         const todos = res.data
-        // List ToDos Loop
-        for(let i = 0; i < todos.length; i++) {
-            makeOne(todos[i])
-        }
-    })
+    // List ToDos Loop
+    for(let i = 0; i < todos.length; i++) {
+        makeOne(todos[i])
+    }
+})
     .catch(err => {
         console.log(err)
-    })
-};
-// List todos function
-// function listToDos(todos) {
-//     for(let i = 0; i < todos.length; i++) {
-//         makeOne(todos[i])
-//     }
-// };
+    });
 
-// Create one to do this also needs a spot where we make a delete button and a put button
+// Create one to do
+
 function makeOne(todo){
     // Create div container
     const container = document.createElement("div")
     // Create h1 element
     const h1 = document.createElement("h1")
-    // Create title
-    h1.textContent = todo.title
-    // Append element to page
-    document.body.appendChild(h1)
+    // add description
+    const p = document.createElement("p")
+    // add img
+    const img = document.createElement("img")
     // make a new input
     const newInput = document.createElement("input");
+
+    // Create title
+    h1.textContent = todo.title
+    // add description
+    p.textContent = todo.description
+    // define img
+    img.src = todo.imgUrl
     // make it a checkbox
     newInput.type = "checkbox";
     // add text
     newInput.textContent = "";
+    // Define checked box = completed todo
+    const completetoDo = newInput.checked = todo.completed;
+
+    // Append element to page
+    document.body.appendChild(h1)
     // append to div
     document.body.appendChild(newInput)
-    // Define checked box = completed todo
-    newInput.checked = todo.completed;
     // Append new div to list
     list.appendChild(container)
     // Append new h1 to div
     container.appendChild(h1)
     // Append user input to div (checked box)
     container.appendChild(newInput)
+
     // addEventListener take 2 arguments, action and the function
     newInput.addEventListener("change", function(e) {
         e.preventDefault();
-        axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, {completed
+        axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, {completetoDo
         })
-            // This should fire off a linethrough when the todo is completed
+            // This should fire off a linethrough when the todo is completeted but it is giving me an 'undefined' error. trying to debug
             .then(res => {
-                h1.style.textDecoration = res.data.completed ? "line-through": "none"
+                if(res.data.completetoDo){
+                    h1.style.textDecoration = "line-through"
+                } else {
+                    h1.style.textDecoration = "none"
+                }
+            });
+    });
+
+    // Part 3 Put
+    // add put button for each todo
+    // create button element
+    const putBtn = document.createElement("button")
+    putBtn.textContent = "put"
+    // append to the todo
+    h1.appendChild(putBtn)
+    // add event listener
+    putBtn.addEventListener("submit", function(e){
+        e.preventDefault();
+        axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
+            .then(res => {
+                console.log(res.data)
             })
-    })
-    // add edit button for each todo
-    for(i=0; i<todos.length; i++) {
-        // create buttone element
-        const putBtn = document.createElement("button")
-        putBtn.textContent = "edit"
-        // append to the todo
-        h1.appendChild(putBtn)
-        // add event listener
-        putBtn.addEventListener("click", function(e){
-            e.preventDefault();
-            axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
-                //A bit confused on exactly what promise to write here or how to write it
-                .then(res => res.data.newInput) //totally just guessing here I have no idea
-        })   
+            .catch(err => console.log(err))
+    })   
 
-    }
+    // Part 4 Delete
     // add delete button for each todo
-    for(i=0; i<todos.length; i++) {
-        const deleteBtn = document.createElement("button")
-        deleteBtn.textContent = "delete"
-        // Append child
-        h1.appendChild(deleteBtn)
-        deleteBtn.addEventListener("click", function(e){
-            // Allows user to delete specific todo
-            e.preventDefault();
-            axios.delete("https://api.vschool.io/simpfriedrice/todo/" + todo._id, userPost)
-                .then(res=>console.log(res.data))
-                .catch(err=>console.log(err))
+    const deleteBtn = document.createElement("button")
+    deleteBtn.textContent = "delete"
+    // Append child
+    h1.appendChild(deleteBtn)
+    deleteBtn.addEventListener("click", function(e){
+        // Allows user to delete specific todo
+        e.preventDefault();
+        // delete request
+        axios.delete("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
+        .then(res=>{
+            console.log(res)
+            // delete child
+            list.removeChild(container) 
+            })
+            .catch(err=>console.log(err))
         })
-    }
+
 };
-
-
-
 
 // Part 2 - POST
 // The user can add new todos to their list. The new item should be 
@@ -147,13 +127,7 @@ function makeOne(todo){
 // A user should be able to give the item a description.
 // A user should be able to attach an imgUrl to the item
 
-// Clearlist function to avoid data repeat on page
-function clearList() {
-    const list = document.getElementById('list')
-    while(list.firstChild) {
-        list.removeChild(list.firstChild)
-    }
-}
+
 // Add ToDos Form
 const addToDoForm = document["add-todo-form"]
 
@@ -161,16 +135,16 @@ const addToDoForm = document["add-todo-form"]
 
 addToDoForm.addEventListener("submit", function(e){
     e.preventDefault();
-        console.dir(addToDoForm)
-        const toDoContent = addToDoForm.title.value
-        console.log(toDoContent);
-        const userPost= {
-            title : toDoContent
-        }
-        postToDo(userPost);
-    });
+    console.dir(addToDoForm)
+    const toDoContent = addToDoForm.title.value
+    console.log(toDoContent);
+    const userPost= {
+        title : toDoContent
+    }
+    postToDo(userPost);
+});
 
-// Post ToDo Function
+// Post ToDo Function (currently this function works but I have to refresh the page first for it to show up)
 function postToDo(userPost) {
     axios.post("https://api.vschool.io/simpfriedrice/todo", userPost)
     .then(res => {
@@ -181,79 +155,16 @@ function postToDo(userPost) {
     });
 }
 
-// Part 3 - PUT Part 1
-// Each todo will have a checkbox where it can be marked complete or incomplete
-// Checking the checkbox should update the database
-
-// get one
-
-getOne(todos);
-
-
-// Put ToDos Function
-function putToDos(userPost) {
-    axios.put("https://api.vschool.io/simpfriedrice/todo/" + todo._id, userPost)
-    .then(response => {
-        console.log(response.data)
-    })
-    .catch(error => console.log(error))
-}
-
-// putbutton
-
-const putBtn = document.createElement("button")
-
-putBtn.addEventListener("click", putToDos) 
-
-// Clear todos
-clearList(todos);
-
-// Display New ToDos
-
-function displayTodos(todos){
-    todos.map(todo => {
-        // Create Element Container
-        let div = document.createElement('div')
-        //Create Elements
-        let h1 = document.createElement('h1')
-        //Add Text
-        h1.textContent = todo.title
-        //Add Element to Container
-        div.appendChild(h1)
-        //Add Container to HTML
-        document.getElementById('list').appendChild(div)
-    })
-}
-
-
 
 // update
-
+// Clearlist function to avoid data repeat on page
+function clearList() {
+    const list = document.getElementById('list')
+    while(list.firstChild) {
+        list.removeChild(list.firstChild)
+    }
+}
 // List data
 getToDos(todos);
-
-
-
-// Part 4 - DELETE
-// A user will be able to delete todos (this is different from marking a todo as "completed")
-// Each todo should be rendered with a button marked "X" or "Delete" that when clicked, will delete the Todo
-
-
-// delete
-
-const deleteBtn = document.getElementById('delete-button')
-
-// addEventListener
-deleteBtn.addEventListener("click", deleteToDo)
-
-
-// Delete Function
-function deleteToDo() {
-    axios.delete("https://api.vschool.io/simpfriedrice/todo/" + todo._id, todo)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-
-}
-
 
 
